@@ -5,12 +5,15 @@ import NotFound from './pages/NotFound'
 import NavBar from './components/Navbar'
 
 import './global.css'
+import Translation from './pages/Translation'
+// import './assets/js/lib/html2canvas.min.js'
 
 const AppRoutes = () => {
   return (
     <Router>
-      <NavBar />
+      {/* <NavBar /> */}
       <Routes>
+        <Route path="/translation" element={<Translation />} />
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="*" element={<NotFound />} />

@@ -1,6 +1,15 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import backImage from '../assets/images/png/back.png'
+import settingIcon from '../assets/images/svg/setting-dashboard.svg'
+import './Home.css'
+import arrowRight from '../assets/images/svg/arrow-right.svg'
+import addBlue from '../assets/images/svg/add-blue.svg'
+import createTemplate from '../assets/images/svg/create-template.svg'
+import iconMain from '../assets/images/svg/icon_main.svg'
 
 function Home() {
+  console.log('check img', backImage)
   const [users, setUsers] = useState([])
 
   useEffect(() => {
@@ -23,19 +32,84 @@ function Home() {
     window.api.sendPing()
   }
 
+  const navigate = useNavigate()
+
   return (
-    <div>
-      <h1>Electron Home</h1>
-      <button onClick={sendPing}>Send Ping</button>
-      <button onClick={addUser}>Add User</button>
-      <ul>
-        {users.map((user) => (
-          <li key={user.id}>
-            {user.name} - {user.age} years old
-          </li>
-        ))}
-      </ul>
-    </div>
+    <>
+      <header className="d-flex justify-content-end p-2">
+        <div className="d-flex me-1 ">
+          <div className="p-1">
+            <img src={settingIcon} />
+          </div>
+          <div className="dropdown">
+            <button
+              className="btn btn-dropdown dropdown-toggle"
+              type="button"
+              id="languageDropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              EN
+            </button>
+            <ul className="dropdown-menu" aria-labelledby="languageDropdown">
+              <li>
+                <a className="dropdown-item" href="#">
+                  EN - English
+                </a>
+              </li>
+              <li>
+                <a className="dropdown-item" href="#">
+                  KR - Korean
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <main>
+        <div className="container">
+          {/* <!-- Header Section --> */}
+          <div className="header">
+            <h1>LLS Admin</h1>
+            <p>Languages Localization Solution</p>
+          </div>
+
+          {/* <!-- Cards Section --> */}
+          <div className="card-container">
+            {/* <!-- Create Template Card --> */}
+            <div className="card-custom" id="create-template">
+              <div className=" w-100">
+                <div className="card-containt--top w-100" onClick={() => navigate('/translation')}>
+                  <h3>Create Template</h3>
+                  <img src={arrowRight} height="50px" alt="" />
+                </div>
+                <div className="arrow">
+                  <img className="arrow-img" src={createTemplate} alt="" />
+                  <img className="arrow-img-add" src={addBlue} alt="" />
+                </div>
+              </div>
+            </div>
+
+            {/* <!-- Check Validation Card --> */}
+            <div
+              className="card-custom"
+              id="check-validation"
+              onClick={() => navigate('/translation')}
+            >
+              <div className=" w-100">
+                <div className="card-containt--top w-100">
+                  <h3>Check Validation</h3>
+                  <img src={arrowRight} height="50px" alt="" />
+                </div>
+                <div className="arrow">
+                  <img className="arrow-img check-tmpl-img" src={iconMain} alt="" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </>
   )
 }
 

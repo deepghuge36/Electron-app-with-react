@@ -1,0 +1,165 @@
+.custom__upload {
+  width: 100%;
+}
+
+.custom__upload input {
+  background: transparent;
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000000;
+  font-size: 18px;
+  border: 1px solid #ccc;
+  width: 100%;
+  min-height: 150px;
+  font-weight: 500;
+}
+
+.fullheight {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header__new {
+  border: 1px solid #dbe2ee;
+}
+.home_back {
+  width: 33%;
+}
+.home_back span {
+  position: relative;
+}
+.home_back span input {
+  position: absolute;
+  height: 100%;
+  z-index: 9999;
+  padding-left: 30px;
+  background: none;
+  border: none;
+  color: #000;
+  left: 0;
+  top: 0;
+  width: 100px;
+  text-align: left;
+}
+.homelogo {
+  width: 33%;
+  text-align: center;
+}
+.homelogo h1 {
+  margin: 0;
+  padding: 15px 0;
+  font-size: 30px;
+  color: #718edf;
+}
+.setting {
+  width: 33%;
+}
+
+.btn__collection {
+  padding-top: 20px;
+}
+.mb-0 {
+  margin-bottom: 0 !important;
+}
+.text-wrap {
+  white-space: normal;
+  word-break: break-all;
+}
+
+.watermarked {
+  position: fixed;
+  overflow: hidden;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.1;
+  z-index: -1;
+}
+
+.watermarked img {
+  padding: 10px 0 0 0;
+  width: 100%;
+}
+
+.mainbox {
+  position: relative;
+  z-index: 4;
+}
+
+.watermarked::before {
+  position: absolute;
+  top: -75%;
+  left: -75%;
+  display: block;
+  width: 150%;
+  height: 150%;
+  transform: rotate(-45deg);
+  content: attr(data-watermark);
+  opacity: 0.7;
+  line-height: 3em;
+  letter-spacing: 2px;
+  color: #000000;
+  z-index: 0;
+}
+
+.sidebar {
+  width: 250px;
+  height: 100%;
+  background-color: #f8f9fa;
+  border-right: 1px solid #ddd;
+}
+
+.sidebar .nav-link {
+  font-weight: 600;
+  color: #333;
+  border-left: 4px solid transparent;
+  padding-left: 15px;
+}
+
+.sidebar .nav-link.active {
+  background-color: #e9ecef;
+  border-left-color: #007bff;
+  color: #007bff;
+}
+
+/* Main Content */
+.content-container {
+  padding: 20px;
+}
+
+/* Device Tags */
+.device-tag {
+  display: inline-block;
+  padding: 10px 15px;
+  border: 1px solid #007bff;
+  border-radius: 5px;
+  color: #007bff;
+  font-weight: 500;
+  text-align: center;
+  min-width: 120px;
+}
+
+.device-tag small {
+  font-size: 12px;
+  color: #555;
+}
+
+.device-tag:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
+/* Page Display */
+.content-page {
+  display: none;
+}
+
+.content-page.active {
+  display: block;
+}
