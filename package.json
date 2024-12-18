@@ -58,27 +58,11 @@
     "vite-plugin-electron": "^0.29.0"
   },
   "build": {
-    "appId": "electron-app",
-    "files": [
-      "out/**/*",
-      "node_modules/**/*",
-      "package.json"
-    ],
+    "productName": "LLS ADMIN",
+    "icon": ".src/assets/images/icon/icon.png",
     "extraResources": [
-      {
-        "from": "uploads",
-        "to": "uploads",
-        "filter": [
-          "**/*"
-        ]
-      },
-      {
-        "from": "database",
-        "to": "database",
-        "filter": [
-          "**/*"
-        ]
-      }
+      "./uploads/**",
+      "./database/lls.db"
     ]
   }
 }
