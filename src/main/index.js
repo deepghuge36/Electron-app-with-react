@@ -2,8 +2,9 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
-// import db from '../../db' // Import the database module
-const db = require('../../db')
+// Import the database module
+
+import fs from 'fs'
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
@@ -15,9 +16,15 @@ function createWindow() {
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false,
-      contextIsolation: true, // Required for contextBridge
+      contextIsolation: true,
+      nodeIntegration: false, // Keep this false for security
       enableRemoteModule: false,
-      nodeIntegration: false
+      webSecurity: false, // This might be needed to load local files
+      sandbox: false,
+      contextIsolation: true,
+      nodeIntegration: false, // Keep this false for security
+      enableRemoteModule: false,
+      webSecurity: false
     }
   })
 
@@ -37,19 +44,42 @@ function createWindow() {
   }
 }
 
-// IPC Handlers for database operations
-ipcMain.handle('get-users', async () => {
-  const stmt = db.prepare('SELECT * FROM users')
-  return stmt.all() // Fetch all users and return to renderer
-})
+ipcMain.handle('read-local-file', async (event, filename) => {
+  try {
+    // Hardcode the uploads directory path
+    const uploadsDir = join(__dirname, '..', '..', 'uploads')
 
-ipcMain.handle('add-user', async (event, user) => {
-  const { name, age } = user
-  const insert = db.prepare('INSERT INTO users (name, age) VALUES (?, ?)')
-  insert.run(name, age)
+    // Alternative method to get the absolute path
+    const fullPath = join(uploadsDir, filename)
 
-  const stmt = db.prepare('SELECT * FROM users')
-  return stmt.all() // Return updated user list
+    // Verify file exists before reading
+    if (!fs.existsSync(fullPath)) {
+      console.error('File does not exist:', fullPath)
+      return null
+    }
+
+    // Read file
+    const fileBuffer = fs.readFileSync(fullPath)
+
+    // Determine mime type based on file extension
+    const ext = require('path').extname(filename).toLowerCase()
+    const mimeType =
+      ext === '.png'
+        ? 'image/png'
+        : ext === '.gif'
+          ? 'image/gif'
+          : ext === '.webp'
+            ? 'image/webp'
+            : 'image/jpeg'
+
+    // Convert to base64
+    return `data:${mimeType};base64,${fileBuffer.toString('base64')}`
+  } catch (error) {
+    console.error('Error reading file in main process:', error)
+    console.error('Filename:', filename)
+    console.error('Full path attempted:', join(__dirname, '..', '..', 'uploads', filename))
+    return null
+  }
 })
 
 ipcMain.on('ping', () => {

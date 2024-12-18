@@ -17,10 +17,6 @@ function Home() {
     console.log('Component mounted', window.api)
 
     // Fetch users when the component mounts
-    window.api.getUsers().then((data) => {
-      console.log('Fetched users:', data)
-      setUsers(data)
-    })
   }, [])
 
   const addUser = async () => {

@@ -23,12 +23,23 @@
     "@electron-toolkit/utils": "^3.0.0",
     "better-sqlite3": "^11.6.0",
     "bootstrap": "^5.3.3",
+    "crypto-js": "^4.2.0",
     "electron-is-dev": "^3.0.1",
     "electron-updater": "^6.1.7",
+    "file-saver": "^2.0.5",
+    "jszip": "^3.10.1",
+    "jszip-utils": "^0.1.0",
     "react-bootstrap-icons": "^1.11.5",
     "react-router-dom": "^7.0.2",
+    "toastify-js": "^1.12.0",
     "util": "^0.12.5",
-    "util.promisify": "^1.1.2"
+    "util.promisify": "^1.1.2",
+    "bootstrap-icons": "^1.11.3",
+    "dotenv": "^16.4.5",
+    "jquery": "^3.7.1",
+    "minizip-asm.js": "^1.0.10",
+    "sodium-native": "^4.3.1",
+    "yazl": "^3.3.1"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config": "^1.0.2",
@@ -45,5 +56,29 @@
     "react-dom": "^18.3.1",
     "vite": "^5.3.1",
     "vite-plugin-electron": "^0.29.0"
+  },
+  "build": {
+    "appId": "electron-app",
+    "files": [
+      "out/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "uploads",
+        "to": "uploads",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
+        "from": "database",
+        "to": "database",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ]
   }
 }
