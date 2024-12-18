@@ -1,21 +1,21 @@
 // font-loader.js
 
 // Create a <style> element
-const style = document.createElement("style");
-style.type = "text/css";
+const style = document.createElement('style')
+style.type = 'text/css'
 
 // Define the @font-face CSS rule
 const fontFace = `
 @font-face {
   font-family: 'SamsungOne';
-  src: url('../assets/font/SamsungOne-400_v1.1.woff') format('woff'),
+  src: url('../font/SamsungOne-400_v1.1.woff') format('woff'),
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Samsung Sharp Sans';
-  src: url('../assets/font/SamsungSharpSans-Regular.woff') format('woff'),
+  src: url('../font/SamsungSharpSans-Regular.woff') format('woff'),
   font-weight: normal;
   font-style: normal;
 }
@@ -23,7 +23,7 @@ const fontFace = `
 
 @font-face {
   font-family: 'Samsung Sharp Sans Medium';
-  src: url('../assets/font/SamsungSharpSans-Medium.woff') format('woff'),
+  src: url('../font/SamsungSharpSans-Medium.woff') format('woff'),
   font-weight: normal;
   font-style: normal;
 }
@@ -31,7 +31,7 @@ const fontFace = `
 
 @font-face {
   font-family: 'Samsung Sharp Sans Bold';
-  src: url('../assets/font/SamsungSharpSans-Bold.woff') format('woff'),
+  src: url('../font/SamsungSharpSans-Bold.woff') format('woff'),
   font-weight: normal;
   font-style: normal;
 }
@@ -69,10 +69,12 @@ const fontFace = `
     --color-darkslategray: #434343;
     --color-black: #000;
 }
-`;
+`
 
-// Add the CSS rule to the <style> element
-style.appendChild(document.createTextNode(fontFace));
+export default fontFace
 
-// Append the <style> element to the document's <head>
-document.head.appendChild(style);
+// // Add the CSS rule to the <style> element
+// style.appendChild(document.createTextNode(fontFace))
+
+// // Append the <style> element to the document's <head>
+// document.head.appendChild(style)

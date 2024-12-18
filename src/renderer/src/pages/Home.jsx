@@ -7,6 +7,7 @@ import arrowRight from '../assets/images/svg/arrow-right.svg'
 import addBlue from '../assets/images/svg/add-blue.svg'
 import createTemplate from '../assets/images/svg/create-template.svg'
 import iconMain from '../assets/images/svg/icon_main.svg'
+import { ROUTE_TRANSLATION } from '../pathConstant'
 
 function Home() {
   console.log('check img', backImage)
@@ -79,7 +80,10 @@ function Home() {
             {/* <!-- Create Template Card --> */}
             <div className="card-custom" id="create-template">
               <div className=" w-100">
-                <div className="card-containt--top w-100" onClick={() => navigate('/translation')}>
+                <div
+                  className="card-containt--top w-100"
+                  onClick={() => navigate(ROUTE_TRANSLATION)}
+                >
                   <h3>Create Template</h3>
                   <img src={arrowRight} height="50px" alt="" />
                 </div>
@@ -94,7 +98,7 @@ function Home() {
             <div
               className="card-custom"
               id="check-validation"
-              onClick={() => navigate('/translation')}
+              onClick={() => navigate(ROUTE_TRANSLATION)}
             >
               <div className=" w-100">
                 <div className="card-containt--top w-100">

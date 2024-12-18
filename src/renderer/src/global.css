@@ -1,9 +1,37 @@
 @font-face {
   font-family: 'SamsungOne';
-  src: url('./assets/font/SamsungOne-400_v1.1.woff') format('truetype');
+  src: url('../font/SamsungOne-400_v1.1.woff') format('woff');
   font-weight: 400; /* Normal weight */
   font-style: normal; /* Regular style */
 }
 body {
   font-family: 'SamsungOne', sans-serif;
+}
+
+@font-face {
+  font-family: 'SamsungOne';
+  src: url('../font/SamsungOne-400_v1.1.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Samsung Sharp Sans';
+  src: url('../font/SamsungSharpSans-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Samsung Sharp Sans Medium';
+  src: url('../font/SamsungSharpSans-Medium.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Samsung Sharp Sans Bold';
+  src: url('../font/SamsungSharpSans-Bold.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
 }

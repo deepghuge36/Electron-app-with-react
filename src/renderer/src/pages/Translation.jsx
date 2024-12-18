@@ -1,46 +1,54 @@
 import React from 'react'
 import backImage from '../assets/images/png/back.png'
 import { useNavigate } from 'react-router-dom'
+import '../../../../node_modules/bootstrap/dist/css/bootstrap.min.css'
+import NavBar from '../components/Navbar'
+import { ROUTE_TRANSLATION_VIEW } from '../pathConstant'
 
 const Translation = () => {
   const navigate = useNavigate()
   console.log('check', backImage)
+
   return (
-    <div>
-      <div class="header__new">
-        <div class="container">
-          <div class="row d-flex justify-content-between align-items-center">
-            <div class="home_back">
-              <span>
-                <img src={backImage} />
-                <input id="btnHome" type="button" value="Home" onClick={navigate('/')} />
-              </span>
-            </div>
-            <div class="homelogo">
-              <h1>LLS</h1>
-            </div>
-            <div class="setting"></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="main-body">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-12 d-flex justify-content-between border-bottom border-1 align-items-center">
-              <h3 class="heading text-primary py-3">Key Master</h3>
-              <button id="btnAddNew" class="btn btn-primary mb-3 mb-0">
-                Add New
-              </button>
+    <div className="main-body">
+      <NavBar />
+      <div className="container">
+        <div className="row fullheight">
+          <div className="col">
+            <div className="custom__upload">
+              <input
+                id="btnTranslation"
+                type="button"
+                value="Translation"
+                onClick={() => navigate(ROUTE_TRANSLATION_VIEW)}
+              />
             </div>
           </div>
-          <div class="row g-3 py-3">
-            <div class="col-auto">
-              <input id="hdnKeyId" type="hidden" />
+          <div className="col">
+            <div className="custom__upload">
+              <input id="btnExport" type="button" value="Export" />
             </div>
           </div>
-
-          <div id="tbData"></div>
+          <div className="col">
+            <div className="custom__upload">
+              <input id="btnImport" type="button" value="Validations" />
+            </div>
+          </div>
+          <div className="col">
+            <div className="custom__upload">
+              <input id="btnCategory" type="button" value="Category" />
+            </div>
+          </div>
+          <div>
+            <div className="custom__upload">
+              <input id="btnTranslationView" type="button" value="Translation Page" />
+            </div>
+          </div>
+          <div className="col">
+            <div className="custom__upload">
+              <input id="btnImageEdit" type="button" value="Image Edit" />
+            </div>
+          </div>
         </div>
       </div>
     </div>
