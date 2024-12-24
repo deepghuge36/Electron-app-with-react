@@ -1,13 +1,13 @@
-var JSZip = require("jszip");
-var JSZipUtils = require("jszip-utils");
-var FileSaver = require("file-saver");
-var fs = require("fs");
-const CryptoJS = require("crypto-js");
-const secretKey = "test";
-const translationDB = require("./KeyTranslation");
-const path = require("path");
-const { ipcRenderer } = require("electron");
-var promise = null;
+var JSZip = require('jszip')
+var JSZipUtils = require('jszip-utils')
+var FileSaver = require('file-saver')
+var fs = require('fs')
+const CryptoJS = require('crypto-js')
+const secretKey = 'test'
+const translationDB = require('./KeyTranslation')
+const path = require('path')
+const { ipcRenderer } = require('electron')
+var promise = null
 
 /**
  * Asynchronously imports and processes zip files containing encrypted translation data.
@@ -28,48 +28,44 @@ const importzipfiles = async (sPath, sCountry, passowrd) => {
   const readFilePromise = new Promise((resolve, reject) => {
     fs.readFile(sPath, (err, data) => {
       if (err) {
-        reject("Error reading file:", err);
+        reject('Error reading file:', err)
       } else {
-        resolve(data);
+        resolve(data)
       }
-    });
-  });
+    })
+  })
 
   try {
     // Wait for the file to be read
-    const data = await readFilePromise;
+    const data = await readFilePromise
 
     // Step 2: Load the zip file using JSZip
-    const zip = await JSZip.loadAsync(data);
+    const zip = await JSZip.loadAsync(data)
 
     // Step 3: Extract the 'data.lls' file from the zip
-    const encryptedText = await zip.file("data.lls").async("string");
+    const encryptedText = await zip.file('data.lls').async('string')
     // console.log('encryptedText =>', encryptedText);
 
     // Step 4: Decrypt the content of 'data.lls' using the decryption function
-    const decryptedData = await decryptData(encryptedText, passowrd);
+    const decryptedData = await decryptData(encryptedText, passowrd)
 
     // Step 5: Process the decrypted data
 
     // Update translation in the database (replace with actual update logic)
     for (let i = 0; i < decryptedData.length; i++) {
-      const element = decryptedData[i];
+      const element = decryptedData[i]
       // console.log('element =>', element);
 
-      translationDB?.updateKeyTranslationByKey(
-        element["key"],
-        sCountry,
-        element[sCountry]
-      );
+      translationDB?.updateKeyTranslationByKey(element['key'], sCountry, element[sCountry])
     }
 
     // Return the parsed decrypted data
-    return decryptedData;
+    return decryptedData
   } catch (err) {
-    console.error("Error extracting or decrypting data:", err);
-    throw err;
+    console.error('Error extracting or decrypting data:', err)
+    throw err
   }
-};
+}
 
 /**
  * Imports and decrypts a `.lls` file, processes its content, and updates translations in the database.
@@ -85,14 +81,14 @@ const importzipfiles = async (sPath, sCountry, passowrd) => {
 const importLLSfiles = async (sPath, sCountry, passowrd) => {
   // Wrap fs.readFile in a Promise to use async/await
   const readFilePromise = new Promise((resolve, reject) => {
-    fs.readFile(sPath, "utf8", (err, data) => {
+    fs.readFile(sPath, 'utf8', (err, data) => {
       if (err) {
-        reject(`Error reading file: ${err}`);
+        reject(`Error reading file: ${err}`)
       } else {
-        resolve(data);
+        resolve(data)
       }
-    });
-  });
+    })
+  })
 
   try {
     // Wait for the file to be read
@@ -103,35 +99,31 @@ const importLLSfiles = async (sPath, sCountry, passowrd) => {
 
     // Step 3: Extract the 'data.lls' file from the zip
     // const encryptedText = await zip.file("data.lls").async("string");
-    const encryptedText = await readFilePromise;
+    const encryptedText = await readFilePromise
     // console.log('encryptedText =>', encryptedText);
 
     // Step 4: Decrypt the content of 'data.lls' using the decryption function
-    const decryptedData = await decryptData(encryptedText, passowrd);
+    const decryptedData = await decryptData(encryptedText, passowrd)
 
-    console.log("decryptedData =>", decryptedData);
+    console.log('decryptedData =>', decryptedData)
 
     // Step 5: Process the decrypted data
 
     // Update translation in the database (replace with actual update logic)
     for (let i = 0; i < decryptedData.length; i++) {
-      const element = decryptedData[i];
-      console.log("element =>", element[sCountry]);
+      const element = decryptedData[i]
+      console.log('element =>', element[sCountry])
 
-      translationDB?.updateKeyTranslationByKey(
-        element["key"],
-        sCountry,
-        element[sCountry]
-      );
+      translationDB?.updateKeyTranslationByKey(element['key'], sCountry, element[sCountry])
     }
 
     // Return the parsed decrypted data
-    return decryptedData;
+    return decryptedData
   } catch (err) {
-    console.error("Error extracting or decrypting data:", err);
-    throw err;
+    console.error('Error extracting or decrypting data:', err)
+    throw err
   }
-};
+}
 
 /**
  * Generates a zip file containing encrypted data with base64-encoded images and triggers a download.
@@ -147,64 +139,64 @@ const importLLSfiles = async (sPath, sCountry, passowrd) => {
  */
 
 const downloadzipfiles = (data, password, result) => {
-  var zip = new JSZip();
+  var zip = new JSZip()
 
   try {
     // Map through the data and create the modified data with base64 images
     const modifiedData = data.map((element) => {
       // Construct the path to the image file (base64 conversion is assumed to be handled)
       const imagePath =
-        __dirname.replace("database", "").replace("app.asar", "") +
-        "uploads/" +
-        element["image_path"];
+        __dirname.replace('database', '').replace('app.asar', '') +
+        'uploads/' +
+        element['image_path']
 
       // Convert image to base64 (assuming imageToBlob is a utility function defined elsewhere)
-      const base64Image = imageToBlob(imagePath);
+      const base64Image = imageToBlob(imagePath)
 
       // Return the modified element with base64 image
       return {
         ...element,
-        image_path: base64Image, // Store the image as base64
-      };
-    });
+        image_path: base64Image // Store the image as base64
+      }
+    })
 
     // Encrypt the modified data using the provided password
-    const encryptedData = encryptData(modifiedData, password);
+    const encryptedData = encryptData(modifiedData, password)
     // Add the encrypted data as "data.lls" in the zip file
-    zip.file("data.lls", JSON.stringify(encryptedData));
+    zip.file('data.lls', JSON.stringify(encryptedData))
 
     // Generate the zip file asynchronously and trigger the download
     zip
-      .generateAsync({ type: "blob" })
+      .generateAsync({ type: 'blob' })
       .then(async (blob) => {
         try {
           //  const result = await window.electronAPI.openFile()
           // const result = await window.electronZipAPI.openZipFile();
 
-          const arrayBuffer = await blob?.arrayBuffer();
-          const buffer = Buffer?.from(arrayBuffer);
+          const arrayBuffer = await blob?.arrayBuffer()
+          const buffer = Buffer?.from(arrayBuffer)
 
           if (result) {
             fs.writeFile(result, buffer, (err) => {
               if (err) {
-                console.error("Failed to save the file:", err);
+                console.error('Failed to save the file:', err)
               } else {
-                console.log("File saved successfully:", buffer);
+                console.log('File saved successfully:', buffer)
               }
-            });
+            })
           }
         } catch (error) {
-          console.error("Error showing save dialog:", error);
+          console.error('Error showing save dialog:', error)
         }
       })
       .catch((error) => {
-        console.error("Error generating zip:", error);
-      });
+        console.error('Error generating zip:', error)
+      })
   } catch (err) {
-    console.error(err);
-    throw err;
+    console.error(err)
+    throw err
   }
-};
+}
 
 /**
  * Downloads `.lls` files by processing the provided data, converting images to base64, encrypting the data,
@@ -222,43 +214,43 @@ const downloadLLSfiles = async (data, password, result) => {
     const modifiedData = data.map((element) => {
       // Construct the path to the image file (base64 conversion is assumed to be handled)
       const imagePath =
-        __dirname.replace("database", "").replace("app.asar", "") +
-        "uploads/" +
-        element["image_path"];
+        __dirname.replace('database', '').replace('app.asar', '') +
+        'uploads/' +
+        element['image_path']
 
       // Convert image to base64 (assuming imageToBlob is a utility function defined elsewhere)
-      const base64Image = imageToBlob(imagePath);
+      const base64Image = imageToBlob(imagePath)
 
       // Return the modified element with base64 image
       return {
         ...element,
-        image_path: base64Image, // Store the image as base64
-      };
-    });
+        image_path: base64Image // Store the image as base64
+      }
+    })
 
     // Encrypt the modified data using the provided password
-    const encryptedData = encryptData(modifiedData, password);
+    const encryptedData = encryptData(modifiedData, password)
 
     // Convert the encrypted data to a string and save it as a `.lls` file
-    const fileContent = JSON.stringify(encryptedData);
+    const fileContent = JSON.stringify(encryptedData)
 
     if (result) {
       // Write the file to the specified path
       fs.writeFile(result, fileContent, (err) => {
         if (err) {
-          console.error("Failed to save the file:", err);
+          console.error('Failed to save the file:', err)
         } else {
-          console.log("File saved successfully:", result);
+          console.log('File saved successfully:', result)
         }
-      });
+      })
     } else {
-      console.error("File path not provided.");
+      console.error('File path not provided.')
     }
   } catch (err) {
-    console.error("Error processing data:", err);
-    throw err;
+    console.error('Error processing data:', err)
+    throw err
   }
-};
+}
 
 /**
  * Converts an image file to a base64-encoded string (blob).
@@ -276,17 +268,17 @@ const imageToBlob = (imagePath) => {
   try {
     // Read the image as a binary buffer (blob)
 
-    const imageData = fs.readFileSync(imagePath);
+    const imageData = fs.readFileSync(imagePath)
 
     // Convert the binary data to a base64 string
-    const base64Image = imageData.toString("base64");
+    const base64Image = imageData.toString('base64')
 
-    return base64Image;
+    return base64Image
   } catch (error) {
-    console.error("Error converting image to blob:", error);
-    throw error;
+    console.error('Error converting image to blob:', error)
+    throw error
   }
-};
+}
 
 /**
  * Encrypts the provided data using AES encryption with a secret key.
@@ -303,12 +295,12 @@ const imageToBlob = (imagePath) => {
 
 function encryptData(data, passowrd) {
   // Convert the data into a JSON string
-  let jsonData = JSON.stringify(data);
+  let jsonData = JSON.stringify(data)
 
   // Encrypt the JSON string with AES and the secret key
-  const encryptedData = CryptoJS.AES.encrypt(jsonData, passowrd).toString();
+  const encryptedData = CryptoJS.AES.encrypt(jsonData, passowrd).toString()
 
-  return encryptedData;
+  return encryptedData
 }
 
 // Function to decrypt data
@@ -330,15 +322,15 @@ function encryptData(data, passowrd) {
 function decryptData(encryptedData, password) {
   // console.log("encryptedData =>", encryptedData);
 
-  let finalEncryptData = encryptedData.replace(/^"|"$/g, "");
+  let finalEncryptData = encryptedData.replace(/^"|"$/g, '')
 
   // Decrypt the data with AES and the secret key
-  const decryptedBytes = CryptoJS.AES.decrypt(finalEncryptData, password);
+  const decryptedBytes = CryptoJS.AES.decrypt(finalEncryptData, password)
 
   // Convert the decrypted bytes back to a UTF-8 string and parse the JSON
-  const decryptedData = JSON.parse(decryptedBytes.toString(CryptoJS.enc.Utf8));
+  const decryptedData = JSON.parse(decryptedBytes.toString(CryptoJS.enc.Utf8))
 
-  return decryptedData;
+  return decryptedData
 }
 
 // function decryptData(encryptedData) {
@@ -372,58 +364,57 @@ const importzipfilesandencryptdata = async (filePath, passowrd) => {
   const readFilePromise = new Promise((resolve, reject) => {
     fs.readFile(filePath, (err, data) => {
       if (err) {
-        reject("Error reading file:", err);
+        reject('Error reading file:', err)
       } else {
-        resolve(data);
+        resolve(data)
       }
-    });
-  });
+    })
+  })
 
   try {
     // Wait for the file to be read
-    const data = await readFilePromise;
+    const data = await readFilePromise
 
     // Step 2: Load the zip file using JSZip
-    const zip = await JSZip.loadAsync(data);
+    const zip = await JSZip.loadAsync(data)
 
     // Step 3: Extract the 'data.lls' file from the zip
-    const encryptedText = await zip.file("data.lls").async("string");
+    const encryptedText = await zip.file('data.lls').async('string')
 
     // // Step 4: Decrypt the content of 'data.lls' using the decryption function
     // const decryptedData = decryptData(encryptedText);
 
-    const decryptedData = JSON.parse(decryptData(encryptedText, passowrd));
+    const decryptedData = JSON.parse(decryptData(encryptedText, passowrd))
 
     // Step 5: Log the decrypted data (or use it as needed)
 
     for (let i = 0; i < decryptedData.length; i++) {
-      const item = decryptedData[i];
+      const item = decryptedData[i]
 
       // Check if image_path exists in the object
       if (item.image_path) {
-        const base64Image = item.image_path; // Get the base64 string
-        const imageName = `image_${i + 1}.png`; // Set a unique image name for each
+        const base64Image = item.image_path // Get the base64 string
+        const imageName = `image_${i + 1}.png` // Set a unique image name for each
         const imagePath = path.join(
-          __dirname.replace("database", "").replace("app.asar", "") +
-            "uploads/",
+          __dirname.replace('database', '').replace('app.asar', '') + 'uploads/',
           imageName
-        ); // Set the image path
+        ) // Set the image path
 
         // Call saveBase64Image to save the image
-        const savedImagePath = await saveBase64Image(base64Image, imagePath);
+        const savedImagePath = await saveBase64Image(base64Image, imagePath)
         // console.log(`Image ${i + 1} saved successfully at: ${savedImagePath}`);
 
         // Replace the base64 string with the image file path in the decryptedData
-        decryptedData[i].image_path = savedImagePath;
+        decryptedData[i].image_path = savedImagePath
       }
     }
 
     // Return the decrypted data
-    return decryptedData;
+    return decryptedData
   } catch (err) {
-    console.error("Error extracting or decrypting data:", err);
+    console.error('Error extracting or decrypting data:', err)
   }
-};
+}
 
 /**
  * Imports a `.lls` file, decrypts its contents, and processes the data, including saving any base64-encoded images.
@@ -438,51 +429,50 @@ const importzipfilesandencryptdata = async (filePath, passowrd) => {
 const importLLSFileAndDecryptData = async (filePath, password) => {
   // Wrap the fs.readFile method in a promise to make it work with async/await
   const readFilePromise = new Promise((resolve, reject) => {
-    fs.readFile(filePath, "utf8", (err, data) => {
+    fs.readFile(filePath, 'utf8', (err, data) => {
       if (err) {
-        reject(`Error reading file: ${err}`);
+        reject(`Error reading file: ${err}`)
       } else {
-        resolve(data);
+        resolve(data)
       }
-    });
-  });
+    })
+  })
 
   try {
     // Step 1: Wait for the file to be read
-    const encryptedText = await readFilePromise;
+    const encryptedText = await readFilePromise
 
     // Step 2: Decrypt the content of the `.lls` file
-    const decryptedData = decryptData(encryptedText, password);
+    const decryptedData = decryptData(encryptedText, password)
 
     // Step 3: Process the decrypted data
     for (let i = 0; i < decryptedData.length; i++) {
-      const item = decryptedData[i];
+      const item = decryptedData[i]
 
       // Check if image_path exists in the object
       if (item.image_path) {
-        const base64Image = item.image_path; // Get the base64 string
-        const imageName = `image_${i + 1}.png`; // Set a unique image name for each
+        const base64Image = item.image_path // Get the base64 string
+        const imageName = `image_${i + 1}.png` // Set a unique image name for each
         const imagePath = path.join(
-          __dirname.replace("database", "").replace("app.asar", "") +
-            "uploads/",
+          __dirname.replace('database', '').replace('app.asar', '') + 'uploads/',
           imageName
-        ); // Set the image path
+        ) // Set the image path
 
         // Call saveBase64Image to save the image
-        const savedImagePath = await saveBase64Image(base64Image, imagePath);
+        const savedImagePath = await saveBase64Image(base64Image, imagePath)
 
         // Replace the base64 string with the image file path in the decryptedData
-        decryptedData[i].image_path = savedImagePath;
+        decryptedData[i].image_path = savedImagePath
       }
     }
 
     // Step 4: Return the decrypted data
-    return decryptedData;
+    return decryptedData
   } catch (err) {
-    console.error("Error processing .lls file:", err);
-    throw err; // Re-throw error for further handling
+    console.error('Error processing .lls file:', err)
+    throw err // Re-throw error for further handling
   }
-};
+}
 
 /**
  * Saves a base64 encoded image to a specified file path.
@@ -498,17 +488,17 @@ function saveBase64Image(base64Data, imagePath) {
     // const base64Image = base64Data.replace(/^data:image\/\w+;base64,/, '');
 
     // Convert base64 string to binary buffer
-    const imageBuffer = Buffer.from(base64Data, "base64");
+    const imageBuffer = Buffer.from(base64Data, 'base64')
 
     // Save the buffer as an image file
     fs.writeFile(imagePath, imageBuffer, (err) => {
       if (err) {
-        reject("Error saving the image:", err);
+        reject('Error saving the image:', err)
       } else {
-        resolve(imagePath); // Return the image file path
+        resolve(imagePath) // Return the image file path
       }
-    });
-  });
+    })
+  })
 }
 
 module.exports = {
@@ -517,5 +507,5 @@ module.exports = {
   importzipfilesandencryptdata,
   downloadLLSfiles,
   importLLSFileAndDecryptData,
-  importLLSfiles,
-};
+  importLLSfiles
+}

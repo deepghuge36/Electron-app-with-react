@@ -20,6 +20,8 @@ const TranslationView = () => {
             if (element.image_path) {
               try {
                 const imageBase64 = await window.myAPI.readLocalFile(element.image_path)
+                console.log('Image Base64:', element.image_path)
+
                 return { ...element, imageBase64 }
               } catch (error) {
                 console.error('Error processing image for', element.key, error)

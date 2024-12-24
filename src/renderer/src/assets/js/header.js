@@ -1,1 +1,1 @@
-document.title = "New Title for the Page";
+document.title = 'New Title for the Page'

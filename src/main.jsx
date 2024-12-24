@@ -1,3 +1,4 @@
+// import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../../node_modules/bootstrap/dist/css/bootstrap.min.css'
 import './assets/css/global.css'
 

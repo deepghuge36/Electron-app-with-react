@@ -1,5 +1,5 @@
-const dbmgr = require("./DBManager");
-const db = dbmgr.db;
+const dbmgr = require('./DBManager')
+const db = dbmgr.db
 
 /**
  * Fetches all data from the `key_translation_master` table, ordered by `key_id`.
@@ -16,17 +16,17 @@ const getTranslationList = async () => {
         SELECT *
         FROM key_translation_master
         ORDER BY key_id
-      `;
+      `
 
     // Execute the query
-    const rows = db.prepare(query).all();
-    return rows;
+    const rows = db.prepare(query).all()
+    return rows
   } catch (err) {
-    console.error("Error fetching translations:", err);
-    throw err;
+    console.error('Error fetching translations:', err)
+    throw err
   }
-};
+}
 
 module.exports = {
-  getTranslationList,
-};
+  getTranslationList
+}
