@@ -1,4 +1,11 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
+# Format the files
 npx prettier --write .
+
+# Add formatted files
+git add .
+
+# Proceed with the commit (original message is retained)
+exec "$@"
